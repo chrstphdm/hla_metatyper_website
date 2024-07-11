@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>hla_metatyper</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">hla_metatyper</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./typers.html"> 
+<span class="menu-text">HLA Typers</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./n-1.html"> 
+<span class="menu-text">N-1 Algorithm</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./input.html"> 
+<span class="menu-text">Input Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./references.html"> 
+<span class="menu-text">References</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#project-purpose" id="toc-project-purpose" class="nav-link active" data-scroll-target="#project-purpose">Project purpose</a>
+  <ul class="collapse">
+  <li><a href="#imgt-hla" id="toc-imgt-hla" class="nav-link" data-scroll-target="#imgt-hla">IMGT HLA</a></li>
+  </ul></li>
+  <li><a href="#running-softwares" id="toc-running-softwares" class="nav-link" data-scroll-target="#running-softwares">Running softwares</a></li>
+  <li><a href="#output-data" id="toc-output-data" class="nav-link" data-scroll-target="#output-data">Output data</a>
+  <ul class="collapse">
+  <li><a href="#hisat-genotype" id="toc-hisat-genotype" class="nav-link" data-scroll-target="#hisat-genotype">HISAT-GENOTYPE</a></li>
+  <li><a href="#hlahd" id="toc-hlahd" class="nav-link" data-scroll-target="#hlahd">HLAHD</a></li>
+  <li><a href="#t1k" id="toc-t1k" class="nav-link" data-scroll-target="#t1k">T1K</a></li>
+  <li><a href="#data-parsing-and-standard-output-files" id="toc-data-parsing-and-standard-output-files" class="nav-link" data-scroll-target="#data-parsing-and-standard-output-files">Data parsing and standard output files</a></li>
+  <li><a href="#merge-step" id="toc-merge-step" class="nav-link" data-scroll-target="#merge-step">Merge step</a></li>
+  <li><a href="#how-to-filter-results" id="toc-how-to-filter-results" class="nav-link" data-scroll-target="#how-to-filter-results">How to filter results</a></li>
+  <li><a href="#sec-hlahd_filtering" id="toc-sec-hlahd_filtering" class="nav-link" data-scroll-target="#sec-hlahd_filtering">HLA-HD</a></li>
+  <li><a href="#t1k-1" id="toc-t1k-1" class="nav-link" data-scroll-target="#t1k-1">T1K</a></li>
+  <li><a href="#hisatgenotype" id="toc-hisatgenotype" class="nav-link" data-scroll-target="#hisatgenotype">HISATgenotype</a></li>
+  </ul></li>
+  <li><a href="#summary-after-filtering" id="toc-summary-after-filtering" class="nav-link" data-scroll-target="#summary-after-filtering">Summary after filtering</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">hla_metatyper</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="project-purpose" class="level2">
+<h2 class="anchored" data-anchor-id="project-purpose">Project purpose</h2>
+<p>We seek to type alleles for the classical HLA class I and II genes from the QGP cohort data containing 14,669 samples to create an imputation database. These data are WGS and we have at our disposal BAMs files aligned to HG38 using an alt-aware mapper. To do so, we selected 3 different typers (HISATGenotype, HLA-HD and T1K) for which scripts to update the index files on the IMGT/HLA 3.49 database have been developed. An in-house script has been developed to extract the relevant reads from the BAM files before entering them into the different typer files. The typing data (26 common genes, 3 field resolution) from the 3 typers are processed using an in-house N-1 algorithm to stratify the results. An imputation base built from the most qualitative data is then constructed, and allows us to type new WGS data very quickly.</p>
+<section id="imgt-hla" class="level3">
+<h3 class="anchored" data-anchor-id="imgt-hla">IMGT HLA</h3>
+<p>Most typers are provided with outdated index files. Considering that the IMGT HLA database is updated several times a year and that the number of class I and II alleles is increasing significantly, it seemed important to use a recent version and to make sure that the same versions are used between all typers.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures_tables/graph_nb_alleles_by_year_1987-march2023.png" class="img-fluid figure-img"></p>
+<figcaption>imgthla_alleles</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="running-softwares" class="level2">
+<h2 class="anchored" data-anchor-id="running-softwares">Running softwares</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TODO:</p>
+<ul>
+<li>detail the parameters used for each</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="output-data" class="level2">
+<h2 class="anchored" data-anchor-id="output-data">Output data</h2>
+<section id="hisat-genotype" class="level3">
+<h3 class="anchored" data-anchor-id="hisat-genotype">HISAT-GENOTYPE</h3>
+<p>HisatGenotype generates one output file per typed gene for each samples and each indexes. If no result have been founded for a gene, no output file will be created for this gene.</p>
+<p>Output will be found by default in a folder called hisatgenotype_out. Each output file is composed of 2 parts : first one describes top ten alleles with the most number of mapped or compatible reads. Second one describes a <code>true alleles</code> list generated after applying a statistical model on the first list.</p>
+</section>
+<section id="hlahd" class="level3">
+<h3 class="anchored" data-anchor-id="hlahd">HLAHD</h3>
+<p>For one sample, many files are produced by HLAHD. Only <code>*_final.result.txt</code> and <code>*_gene.est.txt</code> are kept and parsed. First file contains list of allele’s couple for each typed genes (one line per gene, <code>Not typed</code> if no result), second file contains list of “Best Allele Pairs” (1 line per allele couple) with details about number of reads aligned for each exons contained in the index.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For all samples, some genes (i.e F &amp; W) seems to be un-typable as a <code>Couldn't read result file.</code> message appears in <code>*_final.result.txt</code></p>
+</div>
+</div>
+</section>
+<section id="t1k" class="level3">
+<h3 class="anchored" data-anchor-id="t1k">T1K</h3>
+<p>T1K’s output parsed is a TSV file (<code>*_genotype.tsv</code>) with, for each line, allele 1 and (if exists) allele 2 descriptions (name, abundance estimation and genotyping quality score). No result for a gene would produce empty description line.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TODO:</p>
+<ul>
+<li><p>comparison table of softwares outputs (filetypes, datatypes, type of results)</p></li>
+<li><p>comparison table of softwares scores</p></li>
+<li><p>consider introducing the fact that hisatgenotype provides a list of results while T1k and HLAHD provide pairs of alleles</p></li>
+<li><p>remember that the formats obtained by each software are different</p></li>
+<li><p>introduce the idea of parsing each output of each software and producing a shared standard output format</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="data-parsing-and-standard-output-files" class="level3">
+<h3 class="anchored" data-anchor-id="data-parsing-and-standard-output-files">Data parsing and standard output files</h3>
+<p>The purpose of this step is to obtain a csv file per sample for each algorithm with information on the id of the sample, the name of the algorithm, the scores for the major and minor allele (if it is a heterozygote, only the major one in the opposite case) and several other different meta information for each algorithm. This kind of file will allow us to easily process data with scripts for the next steps. This step does not alter the results, although a default selection of available data in case of a tie is made. Here are the rules followed:</p>
+<p>For HISATgenotype:</p>
+<ul>
+<li><p>we keep only the 2 alleles with the best abundance scores from the HISAT genotype list</p></li>
+<li><p>in the case of a single allele in the list, it is selected by default, regardless of its abundance score</p></li>
+<li><p>from position 2 in the list of results (minority allele), in case of equality of score between several alleles, we select only one of the alleles (the first in the list)</p></li>
+</ul>
+<p>For HLAHD:</p>
+<ul>
+<li><p>we keep only the number of mapped reads on the first common exons (see <strong>?@tbl-hlahd_genes_exons</strong>)</p></li>
+<li><p>we keep only the first two alleles of the result list, even if there are several other pairs with identical numbers of reads</p></li>
+<li><p>we rearrange the alleles of a pair from the highest number of reads to the lowest</p></li>
+</ul>
+<p>For T1K:</p>
+<ul>
+<li>TODO: verify the method</li>
+</ul>
+</section>
+<section id="merge-step" class="level3">
+<h3 class="anchored" data-anchor-id="merge-step">Merge step</h3>
+<p>At the end of the previous step, we were able to obtain 14,633 x 3 files (i.e 43,699), which represents a considerable fragmentation of the information. This step consists in merging all these files to obtain a single output file, with, for each line, the information of the 3 algorithms (if they exist) for each gene and each sample. Thus, we can more easily compare the results of the 3 algorithms between them.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TODO:</p>
+<ul>
+<li><p>indicate that a merge stage is also performed that combines all the previously generated standard format files into a single file, containing the data of each gene for each sample on each line</p></li>
+<li><p>describe the fields of this file, which will allow to quickly perform queries on the data</p></li>
+</ul>
+</div>
+</div>
+<p>As described in <a href="#tbl-comparison_fields" class="quarto-xref">Table&nbsp;1</a>, 2 comparison fields are added by our script. These allow us to perform simple queries to obtain a list of calls according to the criterion of equality between the algorithms.</p>
+<div id="tbl-comparison_fields" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparison_fields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Description of the 2 comparison fields added by our script. The comparisons are made ignoring the notion of majority and minority allele. For example, a couple of alleles A and B for HISATgenotype is considered as equal to the couple of alleles B and A for HLA-HD, and would correspond to the comparison bit 100
+</figcaption>
+<div aria-describedby="tbl-comparison_fields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th>comparison bits</th>
+<th>comparison integer</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000</td>
+<td>0</td>
+<td>alleles are all different</td>
+</tr>
+<tr class="even">
+<td>001</td>
+<td>1</td>
+<td>alleles HLA-HD == alleles T1K</td>
+</tr>
+<tr class="odd">
+<td>010</td>
+<td>2</td>
+<td>alleles HISATgenotype == alleles T1K</td>
+</tr>
+<tr class="even">
+<td>011</td>
+<td>3</td>
+<td>Not possible</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td>4</td>
+<td>alleles HISATgenotype == alleles HLA-HD</td>
+</tr>
+<tr class="even">
+<td>101</td>
+<td>5</td>
+<td>Not possible</td>
+</tr>
+<tr class="odd">
+<td>110</td>
+<td>6</td>
+<td>Not possible</td>
+</tr>
+<tr class="even">
+<td>111</td>
+<td>7</td>
+<td>alleles are all identical</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TODO:</p>
+<ul>
+<li><p>recall that HLAHD does not type all the genes, which explains the values at 0</p></li>
+<li><p>describe the low number of unique alleles for T1K</p></li>
+<li><p>List the genes for which a particular effort should be made to increase the number of matching calls</p></li>
+<li><p>List the means that can be used to do this (deleting calls considered of poor quality, lowering the definition of alleles, etc.)</p></li>
+</ul>
+</div>
+</div>
+<div class="cell" data-fig-width="8" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-typing_merging" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-typing_merging-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-typing_merging">flowchart 
+
+    extraction_process{{generate BAMs with selected reads}}-.-&gt;merge_bam
+
+    generate_fastqs{generate\nFASTQs R1 &amp; R2}
+    merge_bam[merged BAM] --&gt; generate_fastqs
+    generate_fastqs --&gt; fq1
+    generate_fastqs --&gt; fq2
+    
+    merge_bam --&gt;t1k[T1K]
+
+    bed_mhc[\8 indexes files\]--&gt;hisat[HISATGENOTYPE]
+
+    subgraph typing HLA genes
+        fq1 --&gt; hisat
+        fq2 --&gt; hisat
+        fq1 --&gt; hlahd[HLAHD]
+        fq2 --&gt; hlahd[HLAHD]
+        t1k --&gt; t1k_report[one\nT1K report file\nper sample]
+        hlahd --&gt; hlahd_reports[two\nHLAHD report files\nper gene/sample]
+        hisat --&gt; hisat_reports[one\nHISATGENOTYPE report file\nper index/gene/sample]
+    end
+
+    subgraph generate tsv
+        hisat_reports --&gt;|for each gene &amp; all indexes|hisat_formater(keep MAX nb_reads aligned\ncompute score=abundance x nb_reads/100\nmean of score of indexes per allele\nextract number of indexes per allele\nif needed, cast 4-fields to 3-fields\nif casted, sum of scores &amp; sum of nb_indexes)
+        hlahd_reports --&gt;|for each gene|hlahd_formater(extract nb_reads per gene/allele/exon\nsum the nb_reads per gene/allele\nextract nb of exons per gene/allele )
+        t1k_report --&gt;t1k_formater(extract abundance estimation per gene/allele\nextract genotyping quality pergene/allele)
+        hisat_formater --&gt; hisat_tsv_file[hisat formated tsv file]
+        hlahd_formater --&gt; hlahd_tsv_file[hlahd formated tsv file]
+        t1k_formater --&gt; t1k_tsv_file[t1k formated tsv file]
+        hisat_tsv_file --&gt; merge_tsv{merge tsv files}
+        hlahd_tsv_file --&gt; merge_tsv
+        t1k_tsv_file --&gt; merge_tsv
+    end
+
+    merge_tsv --&gt; all_typers[merged report per sample]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-typing_merging-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Description of the typing and merging process.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-filter-results" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-filter-results">How to filter results</h3>
+<p>Because all the algorithm used may provide calls for the HLA-DRB3-4-5 genes if some reads are aligned to one of these genes, even if a sample does not actually carry any copy of them, these genes are excluded from the filter step. Moreover, a specific step will be apply later in order to determine which of these genes (if any, and how many) may be associated with the DRB1 gene alleles.</p>
+</section>
+<section id="sec-hlahd_filtering" class="level3">
+<h3 class="anchored" data-anchor-id="sec-hlahd_filtering">HLA-HD</h3>
+<p>This is the only algorithm for which an empirical threshold value exists in the literature (TODO: need more references).</p>
+<p>From <span class="citation" data-cites="butler2023hla">(<a href="#ref-butler2023hla" role="doc-biblioref">Butler-Laporte et al. 2023</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>[..] we only used HLA calls with a mean coverage of 10 at exon 2, except for HLA-DRB2 and HLA-DRB8, where a mean coverage of 10 at exon 3 was used since these two genes do not have a second exon.</p>
+</blockquote>
+<p>So we considered that to be retained, the number of reads of each allele (majority and minority) must be <strong>&gt;=10</strong>. Value is similar to what we can observed in <span class="citation" data-cites="butler2023hla">(<a href="#ref-butler2023hla" role="doc-biblioref">Butler-Laporte et al. 2023</a>)</span>.</p>
+</section>
+<section id="t1k-1" class="level3">
+<h3 class="anchored" data-anchor-id="t1k-1">T1K</h3>
+<!-- There is no empirical filter. However, we can observe the distribution of the sum of the abundance score values from @fig-t1k_abundances_distribution and the sum of the genotype quality vs sum of the abundances from @fig-t1k_abundances_gqual -->
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As a test, we use the value <code>-log10(5 x 10^-8)</code> as the T1K genotyping quality threshold because this variable is basically a P-VALUE and <code>-log10(5 x 10^-8)</code> is the statistical significance of a result from a GWAS. It is a measure of the level of confidence that the result obtained is significant and cannot be attributed to chance. The larger the result, the higher the confidence level and the higher the T1K genotyping quality value.</p>
+</div>
+</div>
+</section>
+<section id="hisatgenotype" class="level3">
+<h3 class="anchored" data-anchor-id="hisatgenotype">HISATgenotype</h3>
+<!-- Let's observe the distribution of the sum of the abundance score values from @fig-hisat_abundances_distribution -->
+<p>The only approach referenced in the literature is shown in <span class="citation" data-cites="orenbuch2020arcashla">(<a href="#ref-orenbuch2020arcashla" role="doc-biblioref">Orenbuch et al. 2020</a>)</span> but it is a bad idea:</p>
+<blockquote class="blockquote">
+<p>The 10% threshold, previously determined by HISAT-genotype <span class="citation" data-cites="kim2019graph">(<a href="#ref-kim2019graph" role="doc-biblioref">Kim et al. 2019</a>)</span> for use with whole-genome sequencing, assumes that the abundance of the minor allele does not fall below a tenth of the major allele’s abundance.</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Obtaining a quality threshold from the literature for HISATgenotype is very difficult. However, considering the variable coming from HISAT2 and providing a number of aligned reads on each gene, and considering the average size of an exon (150bp) and an intron (1 - 50KB) in the human genome, we will use the value of 200 reads as a threshold. Below this threshold, the HISATgenotype call will be discarded and considered equal to NA.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="summary-after-filtering" class="level2">
+<h2 class="anchored" data-anchor-id="summary-after-filtering">Summary after filtering</h2>
+<p>As described in <a href="#tbl-quality_fields" class="quarto-xref">Table&nbsp;2</a>, 2 quality fields are added by our script. These allow us to perform simple queries to obtain a list of calls according to the criterion of quality filter for each algorithm. And because the comparaison fields describe in <a href="#tbl-comparison_fields" class="quarto-xref">Table&nbsp;1</a> take into account quality fields, a call that does not meet the quality criteria is considered non-existent and will not be considered in the comparison.</p>
+<div id="tbl-quality_fields" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-quality_fields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Description of the 2 quality fields added by our script. The quality filter does not erase the data from the output file, allowing to keep traceability. On the other hand, if it is not satisfied, it deactivates the comparison by considering the corresponding call as non-existent.
+</figcaption>
+<div aria-describedby="tbl-quality_fields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th>quality bits</th>
+<th>quality integer</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000</td>
+<td>0</td>
+<td>all alleles pass quality filters</td>
+</tr>
+<tr class="even">
+<td>001</td>
+<td>1</td>
+<td>T1K alleles are LOW QUAL</td>
+</tr>
+<tr class="odd">
+<td>010</td>
+<td>2</td>
+<td>HLA-HD alleles are LOW QUAL</td>
+</tr>
+<tr class="even">
+<td>011</td>
+<td>3</td>
+<td>HLA-HD and T1K alleles are LOW QUAL</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td>4</td>
+<td>HISATgenotype alleles are LOW QUAL</td>
+</tr>
+<tr class="even">
+<td>101</td>
+<td>5</td>
+<td>HISATgenotype and T1K alleles are LOW QUAL</td>
+</tr>
+<tr class="odd">
+<td>110</td>
+<td>6</td>
+<td>HISATgenotype and HLA-HD alleles are LOW QUAL</td>
+</tr>
+<tr class="even">
+<td>111</td>
+<td>7</td>
+<td>HISATgenotype, HLA-HD and T1K alleles are LOW QUAL</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-butler2023hla" class="csl-entry" role="listitem">
+Butler-Laporte, Guillaume, Joseph Farjoun, Tomoko Nakanishi, Tianyuan Lu, Erik Abner, Yiheng Chen, Michael Hultström, et al. 2023. <span>“HLA Allele-Calling Using Whole-Exome Sequencing Identifies 129 Novel Associations in 11 Autoimmune Diseases: A Multi-Ancestry Analysis in the UK Biobank.”</span> <em>medRxiv</em>, 2023–01.
+</div>
+<div id="ref-kim2019graph" class="csl-entry" role="listitem">
+Kim, Daehwan, Joseph M Paggi, Chanhee Park, Christopher Bennett, and Steven L Salzberg. 2019. <span>“Graph-Based Genome Alignment and Genotyping with HISAT2 and HISAT-Genotype.”</span> <em>Nature Biotechnology</em> 37 (8): 907–15.
+</div>
+<div id="ref-orenbuch2020arcashla" class="csl-entry" role="listitem">
+Orenbuch, Rose, Ioan Filip, Devon Comito, Jeffrey Shaman, Itsik Pe’er, and Raul Rabadan. 2020. <span>“arcasHLA: High-Resolution HLA Typing from RNAseq.”</span> <em>Bioinformatics</em> 36 (1): 33–40.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
