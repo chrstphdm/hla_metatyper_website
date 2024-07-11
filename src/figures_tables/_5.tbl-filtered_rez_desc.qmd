@@ -1,0 +1,89 @@
+---
+title: ""
+execute:
+  echo: false
+jupyter: python3
+output: word_document
+cap-location: bottom
+format: 
+  html:
+    page-layout: full
+  pdf:
+    pdf-engine: lualatex
+    fontsize: 10pt
+    mainfont: Open Sans
+    sansfont: Open Sans
+    # classoption: landscape
+    pagestyle: empty
+    include-in-header: 
+      text: |
+        \usepackage[top=10mm, left=20mm, right=20mm, bottom=10mm]{geometry}
+        \usepackage{lscape}
+        \newcommand{\blandscape}{\begin{landscape}}
+        \newcommand{\elandscape}{\end{landscape}}
+  
+---
+
+\blandscape
+```{python}
+#| label: tbl-filtered_rez_desc
+#| tbl-cap: Description of the impact of filters on the number of concordant calls in 2 and 3 algorithms + hemizygous. The percentage of concordant calls is calculated in relation to the total number of samples in this study (14,669).
+import pandas
+import numpy as np
+from IPython.display import Markdown, display
+def printmd(string):
+    display(Markdown(string))
+
+def tbl_filtered_rez_desc():
+  rez = pandas.read_csv('data/OUTPUT/5.N_1_RESULTS/all_results-filtered.csv')
+  rez2 = pandas.read_csv('data/OUTPUT/5.N_1_RESULTS/all_results.csv')
+  genes_list = sorted(rez.gene.unique().tolist())
+
+
+  markdown_text="| Gene | Concordant calls BEFORE filters (%) | Concordant calls AFTER HLAHD filter (%) | Concordant calls AFTER HISAT filter (%) | Concordant calls AFTER T1K filter (%) | Concordant calls AFTER 3 filters (%) |\n"
+  markdown_text+="| --- | --- | --- | --- | --- | --- |\n"
+
+  for n,gene in enumerate(genes_list ):
+    current_gene_rez = rez.query("gene == @gene")
+    current_gene_rez2 = rez2.query("gene == @gene")
+
+    hisat_rez = current_gene_rez.loc[~current_gene_rez['hisat_genotype'].isna()]
+    hlahd_rez = current_gene_rez.loc[~current_gene_rez['hlahd_genotype'].isna()]
+    t1k_rez = current_gene_rez.loc[~current_gene_rez['t1k_genotype'].isna()]
+
+    ## nb available calls
+    hisat_calls = hisat_rez.shape[0]
+    hlahd_calls = hlahd_rez.shape[0]
+    t1k_calls = t1k_rez.shape[0]
+
+    # concordant_calls = (all_concordant_calls + n_1_calls) / 14669 *100
+
+    concordant_calls = current_gene_rez2.loc[
+      (current_gene_rez2['comparison_int'] != 0) | 
+      ( 
+        (current_gene_rez2.sorted_freq_alleles.str.contains('0#NA')) & (current_gene_rez2.sorted_freq_alleles.str.contains('3#')) 
+      )].shape[0]
+    # concordant_calls = current_gene_rez.loc[current_gene_rez['sorted_freq_alleles'].str.contains('0#NA')]
+
+    ## only calls > threshold
+ 
+    filtered_good_results_hisat = hisat_rez.loc[( (hisat_rez['comparison_int'] != 0) | ( (hisat_rez.sorted_freq_alleles.str.contains('0#NA')) & (hisat_rez.sorted_freq_alleles.str.contains('3#')) )) & (hisat_rez['filter_int'] & (1 << 0) == 0)]
+
+    filtered_good_results_hlahd = hlahd_rez.loc[( (hlahd_rez['comparison_int'] != 0) | ( (hlahd_rez.sorted_freq_alleles.str.contains('0#NA')) & (hlahd_rez.sorted_freq_alleles.str.contains('3#')) )) & (hlahd_rez['filter_int'] & (1 << 1) == 0)]
+
+    filtered_good_results_t1k = t1k_rez.loc[( (t1k_rez['comparison_int'] != 0) | ( (t1k_rez.sorted_freq_alleles.str.contains('0#NA')) & (t1k_rez.sorted_freq_alleles.str.contains('3#')) )) & (t1k_rez['filter_int'] & (1 << 2) == 0)]
+
+    filtered_good_results = current_gene_rez.loc[
+      (
+        (current_gene_rez['comparison_int'] != 0) | 
+        ( 
+          (current_gene_rez.sorted_freq_alleles.str.contains('0#NA')) & (current_gene_rez.sorted_freq_alleles.str.contains('3#')) 
+        )
+      ) & (current_gene_rez['filter_int'] == 0)]
+
+    markdown_text+=f"|{gene}|{concordant_calls} ({concordant_calls/14669*100:.2f})|{filtered_good_results_hlahd.shape[0]} ({filtered_good_results_hlahd.shape[0]/14669*100:.2f})|{filtered_good_results_hisat.shape[0]} ({filtered_good_results_hisat.shape[0]/14669*100:.2f})|{filtered_good_results_t1k.shape[0]} ({filtered_good_results_t1k.shape[0]/14669*100:.2f})|{filtered_good_results.shape[0]} ({filtered_good_results.shape[0]/14669*100:.2f})|\n"
+
+  printmd(markdown_text)
+tbl_filtered_rez_desc()
+```
+\elandscape

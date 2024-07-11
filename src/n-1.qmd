@@ -1,0 +1,53 @@
+---
+title: "N-1 Algorithm"
+---
+
+## Definitions
+
+Let's considers the following :
+
+*Pn* correspond to a pair of alleles, where *n* is the *nth* algorithm. So we have P*1*, P*2* and P*3*.
+
+Let an allele be noted *Am*, where *m* is the *mth* allele of a pair and start from *0 + n*. So A*1* and A*2* belong to the pair P*1*, A*3* and A*4* to P*2* and finally, A*5* and A*6* to the pair P*3*. For each pair, A*m* and A*m+1* are alphanumerically ordered as A*m* < A*m+1*. An allele A*n* can be equal to 'NA' value. 
+
+Results for a gene/sample can be summarized as:
+
+P*1*=(A*1*;A*2*),P*2*=(A*3*;A*4*),P*3*=(A*5*;A*6*)
+
+In the case where an algorithm does not produce results, it would then be noted P*n*=(NA;NA). 
+
+## Equality of pairs
+
+Because the alleles are ordered, we can easily compare the pairs. Thus, saying that *P*1*==P*2* means that A*1*==A*3* and A*2*==A*4*. Let us note **comparison_integer** the variable that counts the number of equal pairs for gene/sample results. As descibed in @tbl-comparison_fields, when all algorithms give the same result, `comparison_integer == 7`. And as soon as `comparison_integer > 0`, we have at least one equality between two pairs.
+
+## Allele counting
+
+Let us note **sorted_freq_alleles** the variable that contains the list of alleles of the results of a gene/sample and their counts, noted in the form `CPT1#A1;`. **sorted_freq_alleles** variable will always contain the NA count. Thus, in the case of identical homozygotes for the 3 algorithms, we will have `3#A1;0#NA`. If no algorithm gives a result, we will have `3#NA`. And for identical heterozygotes in the 3 cases, we have `3#A1;3#A2;0#NA`.
+
+## Description of the algorithm
+
+```{mermaid}
+%%| label: fig-N1_algo
+%%| fig-cap: "Description of N-1 algorithm."
+%%| fig-width: 4
+flowchart TD
+    A[sorted_freq_alleles contains '3#NA' or '2#NA' ]
+    B[comparison_integer > 0]
+    D[sorted_freq_alleles contains '1#NA']
+    E[sorted_freq_alleles contains '0#NA' && '3#']
+    G[sorted_freq_alleles contains '2#']
+    H([output NA-NA])
+    I([output PAIRS OK])
+    J([output HEMIZYGOT TOCHECK])
+    K([output HEMIZYGOT OK])
+    A --> |yes|H
+    A --> |no|B
+    B --> |yes|I
+    B --> |no|D
+    D --> |yes|G
+    G --> |yes|J
+    G --> |no|H
+    D --> |no|E
+    E --> |yes|K
+    E --> |no|H
+```

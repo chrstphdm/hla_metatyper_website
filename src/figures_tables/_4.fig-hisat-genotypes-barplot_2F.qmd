@@ -1,0 +1,113 @@
+---
+title: ""
+execute:
+  echo: false
+jupyter: python3
+output: word_document
+cap-location: bottom
+format: 
+  html:
+    page-layout: full
+  pdf:
+    pdf-engine: lualatex
+    fontsize: 12pt
+    mainfont: Open Sans
+    sansfont: Open Sans
+    # classoption: landscape
+    pagestyle: empty
+    include-in-header: 
+      text: |
+        \usepackage[top=0.5mm, left=10mm, right=10mm, bottom=2mm]{geometry}
+        \usepackage{lscape}
+        \newcommand{\blandscape}{\begin{landscape}}
+        \newcommand{\elandscape}{\end{landscape}}
+  
+---
+
+```{python}
+#| label: fig-hisat_genotypes_barplot_2F
+#| fig-cap: Proportion of Heterozygous (Htz), Homozygous (Hmz) and untyped samples for each typers results **DOWNSCALED to 2 fields** (after applying quality filters). Vertical green line match with the 14,366 samples.
+#| fig-subcap: 
+#|   - "HISAT-genotype"
+#|   - "HLA-HD"
+#|   - "T1K"
+#| layout-ncol: 3
+#| layout-nrow: 1
+#| warning: false
+#| error: false
+
+import pandas
+import numpy as np
+import matplotlib.pyplot as plt
+
+def hisat_genotypes_barplot_2F():
+  rez = pandas.read_csv('data/OUTPUT/5.N_1_RESULTS/all_results-2F-filtered.csv')
+
+  hisat_results = rez.loc[~rez['hisat_genotype'].isna()]
+  hlahd_results = rez.loc[~rez['hlahd_genotype'].isna()]
+  t1k_results = rez.loc[~rez['t1k_genotype'].isna()]
+
+  common_genes = np.intersect1d(hisat_results.gene.unique(),np.intersect1d(hlahd_results.gene.unique(),t1k_results.gene.unique())).tolist()
+
+  for gene in ["DRB2","DRB3","DRB4","DRB5"]:
+    if gene in common_genes:
+      common_genes.remove(gene) 
+
+  hisat_results = hisat_results.query("gene == @common_genes").loc[(hisat_results['filter_int'] == 0)]
+  hlahd_results = hlahd_results.query("gene == @common_genes").loc[(hlahd_results['filter_int'] == 0)]
+  t1k_results = t1k_results.query("gene == @common_genes").loc[(t1k_results['filter_int'] == 0)]
+
+
+  # fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(28,5))
+  # fig.tight_layout()
+
+  p_hisat = pandas.crosstab(
+                            hisat_results['gene'], 
+                            hisat_results['hisat_genotype']
+  ).sort_values(
+                            ['gene'],
+                            ascending=False
+  ).sort_index(
+                            axis=1, 
+                            ascending=False
+  ).plot(
+                            kind='barh', 
+                            stacked=True
+  )
+  p_hisat.axvline(x = 14633, color = 'green', linestyle='-.')
+  p_hisat.legend(loc='lower center', bbox_to_anchor=(0.8, -0.3))
+
+  p_hlahd = pandas.crosstab(
+                            hlahd_results['gene'], 
+                            hlahd_results['hlahd_genotype']
+  ).sort_values(
+                            ['gene'],
+                            ascending=False
+  ).sort_index(
+                            axis=1, 
+                            ascending=False
+  ).plot(
+                            kind='barh', 
+                            stacked=True
+  )
+  p_hlahd.axvline(x = 14633, color = 'green', linestyle='-.')
+  p_hlahd.legend(loc='lower center', bbox_to_anchor=(0.8, -0.3))
+
+  p_t1k = pandas.crosstab(
+                            t1k_results['gene'], 
+                            t1k_results['t1k_genotype']
+  ).sort_values(
+                            ['gene'],
+                            ascending=False
+  ).sort_index(
+                            axis=1, 
+                            ascending=False
+  ).plot(
+                            kind='barh', 
+                            stacked=True
+  )
+  p_t1k.axvline(x = 14633, color = 'green', linestyle='-.')
+  p_t1k.legend(loc='lower center', bbox_to_anchor=(0.8, -0.3))
+  plt.show()
+hisat_genotypes_barplot_2F()
+```

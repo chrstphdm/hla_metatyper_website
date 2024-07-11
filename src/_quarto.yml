@@ -1,0 +1,40 @@
+project:
+    type: website
+    output-dir: ../.
+
+
+execute:
+  execute:
+    echo: false
+    eval: true
+    freeze: auto
+    cache: true
+  python:
+    conda-env: my_env
+
+website:
+  title: "hla_metatyper"
+  search: true
+  page-navigation: true
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: typers.qmd
+      - href: n-1.qmd
+      - href: input.qmd
+      - href: references.qmd
+      - href: about.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    link-external-icon: true
+    link-external-newwindow: true
+
+bibliography: references.bib
+
+    
+

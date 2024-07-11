@@ -1,0 +1,25 @@
+---
+title: "HLA Typers"
+---
+
+## Typing algorithms
+
+### HLA-HD 
+
+HLA-HD [@kawaguchi2017hla] is an HLA typing algorithm for short-read sequencing. It consists of constructing an extensive dictionary of HLA alleles, precise mapping of NGS reads, and calculating a score based on weighted read counts to select the most suitable pair of alleles. This method takes into account variation not only in the domain for antigen presentation (G-DOMAIN), but also outside this domain, resulting in 6-digit/3-fields precision.
+
+From [@meng2019benchmarking] :
+
+> Although HLAHD-genotype and HLA-HD may need more computing resources, we recommend using them for NGS-based HLA genotyping because of their higher accuracy and robustness to sequencing depth and read length. We propose that the minimal sequence depth for obtaining more than 90% HLA typing accuracy at the 6-digit allele level is 100X.
+
+### T1K
+
+T1K [@song2022t1k] (The ONE genotyper for KIR and HLA) is a bioinformatics software tool designed to accurately infer alleles of polymorphic genes such as KIR and HLA, based on RNA-seq/WES/WGS read alignments to a set of allele reference sequences. This software can distinguish true alleles from false ones, as well as identify novel SNPs and single-cell representation. It is capable of processing both single-end and paired-end sequencing data of any read length.
+
+### HISATgenotype
+
+HISAT-genotype is based on the HISAT2 [@kim2017hisat2] (Hierarchical Indexing for Spliced Alignment of Transcripts) graph mapper which is well-suited for highly polymorphic areas of the genome, such as the HLA region. It takes FASTQ and BAM files as input, and is effective even with whole-genome sequencing (WGS) data which have a lower coverage than other data types. It produces results with four fields and 8 digits when available.
+
+From [@chen2021silico]:
+
+> Although we observed similar or increased accuracy when comparing results from WGS to WES data from the same tool (Table 2), WGS and WES miscalls were not always the same. This is evident when assessing accuracy at the gene level. For example, the increase in overall accuracy of HISAT2 when using WGS data for identifying class II alleles was mainly due to a lower HLA-DRB1 accuracy when using WES data. We next focused on the top performant methods, HLA-HD and HISAT2. Notably, the number of miscalls in HLA I genes was too low to characterize patterns or biases (Table 2;only a maximum of four miscalls). For class II genes, HISAT2 showed the highest number of HLA-DRB1 miscalls when using WES data (Table 3). This is largely due to a higher number of missing calls generated in HLA-DRB1 by HISAT2 in WES than WGS data.

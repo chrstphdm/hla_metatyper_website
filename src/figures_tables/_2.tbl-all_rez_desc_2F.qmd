@@ -1,0 +1,87 @@
+---
+title: ""
+execute:
+  echo: false
+jupyter: python3
+cap-location: bottom
+format: 
+  html:
+    page-layout: full
+  pdf:
+    pdf-engine: lualatex
+    mainfont: Open Sans
+    sansfont: Open Sans
+    # classoption: landscape
+    pagestyle: empty
+    include-in-header: 
+      text: |
+        \usepackage[top=5mm, left=5mm, right=5mm, bottom=5mm]{geometry}
+        \usepackage{lscape}
+        \newcommand{\blandscape}{\begin{landscape}}
+        \newcommand{\elandscape}{\end{landscape}}
+  
+---
+
+\blandscape
+```{python}
+#| label: tbl-all_rez_desc_2F
+#| tbl-cap: Description of the content of the merged file, by gene. **Except for a downscale operation to 2-fields**, no changes in the results of the algorithms have been made. The number of calls available (HISATgenotype calls, HLA-HD calls & T1K calls) represents the number of non-null results available for each algorithm. The number of unique alleles for each algorithm is the number of alleles found at least once by each algorithm. The percentage of concordant calls is calculated in relation to the total number of samples in this study (14,669). According to the N-1 algorithm which will be described later, a matching call corresponds to 2 or 3 identical calls between the 3 algorithms to which are added the alleles classified as hemizygotes
+import pandas
+import numpy as np
+from IPython.display import Markdown, display
+def printmd(string):
+    display(Markdown(string))
+
+def tbl_all_rez_desc_2F():
+  rez = pandas.read_csv('data/OUTPUT/5.N_1_RESULTS/all_results-2F.csv')
+  genes_list = sorted(rez.gene.unique().tolist())
+
+
+  markdown_text="| Gene | HISAT calls |  HLAHD calls | T1K calls | HISAT unique alleles | HLAHD unique alleles | T1K unique alleles| Concordant calls (%) |\n"
+  markdown_text+="| --- | --- | --- | --- | --- | --- | --- | --- |\n"
+
+  for n,gene in enumerate(genes_list ):
+    current_gene_rez = rez.query("gene == @gene")
+
+    hisat_rez = current_gene_rez.loc[~current_gene_rez['hisat_genotype'].isna()]
+    hlahd_rez = current_gene_rez.loc[~current_gene_rez['hlahd_genotype'].isna()]
+    t1k_rez = current_gene_rez.loc[~current_gene_rez['t1k_genotype'].isna()]
+
+    ## nb available calls
+    hisat_calls = hisat_rez.shape[0]
+    hlahd_calls = hlahd_rez.shape[0]
+    t1k_calls = t1k_rez.shape[0]
+
+    ## number of unique alleles
+    hisat_allele_col_split = hisat_rez.hisat_alleles.str.split('_', expand=True)
+    hisat_unique_alleles = pandas.concat([hisat_allele_col_split[0], hisat_allele_col_split[1]], axis=0).nunique()
+    hlahd_allele_col_split = hlahd_rez.hlahd_alleles.str.split('_', expand=True)
+    hlahd_unique_alleles = pandas.concat([hlahd_allele_col_split[0], hlahd_allele_col_split[1]], axis=0).nunique() if hlahd_calls > 0 else 0
+    t1k_allele_col_split = t1k_rez.t1k_alleles.str.split('_', expand=True)
+    t1k_unique_alleles = pandas.concat([t1k_allele_col_split[0], t1k_allele_col_split[1]], axis=0).nunique()
+
+    ## discordant_calls
+    discordant_calls = current_gene_rez.loc[current_gene_rez['comparison_int'] == 0].shape[0]
+    ## n_1_calls
+    n_1_calls = current_gene_rez.loc[(current_gene_rez['comparison_int'] > 0) & (current_gene_rez['comparison_int'] < 7)].shape[0]
+    ## all_concordant_calls
+    all_concordant_calls = current_gene_rez.loc[current_gene_rez['comparison_int'] == 7].shape[0]
+    ## to_determine_calls
+    to_determine_calls = (current_gene_rez.shape[0] - all_concordant_calls - n_1_calls) / 14669 *100
+    ## concordant_calls
+    concordant_calls = current_gene_rez.loc[
+        (current_gene_rez['comparison_int'] != 0) | 
+        ( 
+          (current_gene_rez.sorted_freq_alleles.str.contains('0#NA')) & (current_gene_rez.sorted_freq_alleles.str.contains('3#')) 
+        )
+      ].shape[0]
+
+    # df.loc[gene] = [hisat_calls,hlahd_calls,t1k_calls,hisat_unique_alleles,hlahd_unique_alleles,t1k_unique_alleles,discordant_calls,n_1_calls,all_concordant_calls,to_determine_calls]
+    markdown_text+=f"|{gene}|{hisat_calls}|{hlahd_calls}|{t1k_calls}|{hisat_unique_alleles}|{hlahd_unique_alleles}|{t1k_unique_alleles}|{concordant_calls} ({concordant_calls/14669 *100:.2f})|\n"
+
+  # Markdown(df.to_markdown())
+  # display(Markdown(df.to_markdown()))
+  printmd(markdown_text)
+tbl_all_rez_desc_2F()
+```
+\elandscape

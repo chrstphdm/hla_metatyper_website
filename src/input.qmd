@@ -1,0 +1,77 @@
+---
+title: "Input Data"
+---
+
+## IMGT/HLA data
+
+IMGT/HLA is a public database specialized in the field of human histocompatibility. It provides information on HLA genes, which are responsible for immune responses in organ transplantation. The database contains information on the amino acid sequences and protein structures associated with the HLA genes. It also contains information on HLA gene polymorphism, including nucleotide sequences, binding motifs and information on antigens that are recognized by the immune system. Finally, the database contains information on the associations between HLA allotypes and human diseases.
+
+The July 2022 version 3.49 contains 929 new alleles, 4 pending alleles, 122 modified alleles, 1 modified suffix and 1 deleted allele compared to the previous version.
+
+:::{.callout-note} 
+TODO:
+
+- describe errors in 3.50 and why we use 3.49
+  
+- describe IMGT data conversion for each algorithm
+
+- explain different indexes for HISATgenotype
+:::
+
+## Sequencing data
+
+The 3 typers accept Paired-end FASTQ files or BAM files as input. 
+
+However, the use of files containing reads already aligned (BAM files) by a typewriter implies that a read extraction step must be executed internally by the typewriter before launching its own alignment algorithm. Our BAM files have been produced with an option allowing our alignment algorithm (bwa TODO) to take into account possible alignments on alternative contigs. Therefore, any read extraction operation must take this information into account in order not to risk missing a certain number of reads.
+
+Reading the T1K source code allowed us to verify that the read extraction step takes alternative alignments into consideration (TODO link). No information was available for HLAHD and HisatGenotype.
+
+Although the documentation of the BAM format is sufficiently detailed, it is currently difficult to find a gold standard, tested and validated method to extract reads aligned to a region shared between a canonical contig and an alternative contig(s). Similarly, there are multiple combinations of software and methods to convert BAM files into FASTQ pair-end files and there are few benchmarks on these methods.
+
+In the context of our work where each read can considerably influence the typing result, it appeared essential to test and measure different methods of extraction of reads but also of conversion into FASTQ files. 
+
+```{mermaid}
+%%| label: fig-reads_extraction
+%%| fig-cap: "Description of the reads extraction process."
+%%| fig-width: 4
+flowchart 
+    15k_raw_bams[15k raw BAMs]
+    raw_bam[raw BAM]
+    15k_raw_bams-->|for each sample|raw_bam
+    bed_mhc[\MHC regions + HLA alt contigs\]
+    
+    subgraph generate BAMs with selected reads
+        mhc_reads_bam[MHC reads BAM]
+        unmapped_reads_bam[UNMAPPED reads BAM]
+        extract_mhc_reads{extract\nMHC reads}
+        extract_unmapped_reads{extract\nUNMAPPED reads}
+        bed_mhc-->extract_mhc_reads
+        raw_bam-->extract_mhc_reads
+        extract_mhc_reads-->mhc_reads_bam
+        raw_bam-->extract_unmapped_reads
+        extract_unmapped_reads-->unmapped_reads_bam
+        merge_bam{merged BAM}
+        mhc_reads_bam-->merge_bam
+        unmapped_reads_bam-->merge_bam
+    end
+
+    subgraph generate FASTQs
+        generate_fastqs{generate\nFASTQs R1 & R2}
+        merge_bam --> generate_fastqs
+        generate_fastqs --> fq1
+        generate_fastqs --> fq2
+    end
+
+```
+
+:::{.callout-note} 
+TODO:
+
+- describe alt-aware alignment data
+  
+- remind that each algo has a step of mapping
+  
+- describe reads extraction step for each algorithm
+  
+- describe our method for reads extraction 
+:::
